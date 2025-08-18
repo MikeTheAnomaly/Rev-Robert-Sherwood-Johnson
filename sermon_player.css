@@ -58,15 +58,52 @@ header p {
     height: fit-content;
 }
 
-.sermon-selector h2 {
-    color: #1e3c72;
+.sermon-selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
+}
+
+.sermon-selector-header h2 {
+    color: #1e3c72;
     font-size: 1.3em;
+    margin: 0;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: #2a5298;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+    background: rgba(42, 82, 152, 0.1);
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.sermon-selector.collapsed .toggle-icon {
+    transform: rotate(-90deg);
 }
 
 .sermon-list {
     max-height: 500px;
     overflow-y: auto;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.sermon-selector.collapsed .sermon-list {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
 }
 
 .sermon-item {
@@ -315,6 +352,8 @@ header p {
     padding: 15px;
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    grid-column: 1 / -1;
 }
 
 .progress-bar {
@@ -324,6 +363,7 @@ header p {
     background: #e9ecef;
     border-radius: 4px;
     cursor: pointer;
+    margin-bottom: 15px;
 }
 
 .progress-fill {
@@ -353,6 +393,40 @@ header p {
     transform: translateX(-50%);
 }
 
+.playback-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.play-pause-button {
+    background: #2a5298;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+}
+
+.play-pause-button:hover:not(:disabled) {
+    background: #1e3c72;
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(30, 60, 114, 0.4);
+}
+
+.play-pause-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .main-content {
@@ -361,19 +435,23 @@ header p {
     }
     
     .sermon-selector {
-        order: 2;
-    }
-    
-    .audio-section {
         order: 1;
     }
     
-    .content-tabs {
+    .audio-section {
+        order: 2;
+    }
+    
+    .progress-container {
         order: 3;
     }
     
-    .tab-content {
+    .content-tabs {
         order: 4;
+    }
+    
+    .tab-content {
+        order: 5;
     }
     
     header h1 {
@@ -386,6 +464,14 @@ header p {
     
     .themes-list {
         grid-template-columns: 1fr;
+    }
+    
+    .sermon-selector {
+        margin-bottom: 10px;
+    }
+    
+    .sermon-list {
+        max-height: 300px;
     }
 }
 

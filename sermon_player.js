@@ -6,6 +6,9 @@ class SermonPlayer {
         this.currentSermon = null;
         this.audioPlayer = document.getElementById('audioPlayer');
         this.currentTranscriptData = null;
+        this.currentSegment = null; // Track current segment for auto-scroll behavior
+        this.lastPlaybackTime = 0; // Track last playback time
+        this.playPauseButton = document.getElementById('playPauseButton');
         
         this.initializePlayer();
         this.loadTranscriptData();
@@ -26,6 +29,19 @@ class SermonPlayer {
             const rect = progressBar.getBoundingClientRect();
             const percent = (e.clientX - rect.left) / rect.width;
             this.seekToPercent(percent);
+        });
+
+        // Set up sermon selector toggle
+        const toggleButton = document.getElementById('toggleSermonList');
+        const sermonSelector = document.querySelector('.sermon-selector');
+        
+        toggleButton.addEventListener('click', () => {
+            sermonSelector.classList.toggle('collapsed');
+        });
+
+        // Set up play/pause button
+        this.playPauseButton.addEventListener('click', () => {
+            this.togglePlayPause();
         });
     }
 
@@ -71,6 +87,10 @@ class SermonPlayer {
 
         this.currentSermon = sermon;
         
+        // Reset current segment for new sermon
+        this.currentSegment = null;
+        this.lastPlaybackTime = 0;
+        
         // Update sermon info
         document.getElementById('sermonTitle').textContent = sermon.title;
         document.getElementById('sermonSummary').textContent = sermon.summary;
@@ -78,6 +98,9 @@ class SermonPlayer {
         // Load audio
         const audioPath = `./final_lower/${sermon.file}.mp3`;
         this.audioPlayer.src = audioPath;
+        
+        // Enable play/pause button
+        this.playPauseButton.disabled = false;
         
         // Load transcript
         await this.loadTranscript(sermon.file);
@@ -147,6 +170,7 @@ class SermonPlayer {
     }
 
     displayTranscript() {
+        console.log('Displaying transcript');
         const transcriptDisplay = document.getElementById('transcriptDisplay');
         
         if (!this.currentTranscriptData || this.currentTranscriptData.length === 0) {
@@ -292,6 +316,14 @@ class SermonPlayer {
             this.createProgressMarkers();
         });
         
+        this.audioPlayer.addEventListener('play', () => {
+            this.updatePlayPauseButton();
+        });
+        
+        this.audioPlayer.addEventListener('pause', () => {
+            this.updatePlayPauseButton();
+        });
+        
         this.audioPlayer.addEventListener('timeupdate', () => {
             this.updateProgress();
             this.highlightCurrentSegment();
@@ -299,6 +331,7 @@ class SermonPlayer {
         
         this.audioPlayer.addEventListener('ended', () => {
             this.updateProgress();
+            this.updatePlayPauseButton();
         });
     }
 
@@ -345,25 +378,38 @@ class SermonPlayer {
         durationDisplay.textContent = this.formatTime(this.audioPlayer.duration);
     }
 
+    currentStatement = null;
     highlightCurrentSegment() {
         if (!this.currentTranscriptData) return;
         
         const currentTime = this.audioPlayer.currentTime;
         
-        document.querySelectorAll('.transcript-segment').forEach(segment => {
-            segment.classList.remove('active');
-        });
-        
+        // Find the current segment based on playback time
         const currentSegment = this.currentTranscriptData.find(segment => 
             currentTime >= segment.startTime && currentTime <= segment.endTime
         );
         
-        if (currentSegment) {
+        // Only proceed if we have a segment and it's different from the previous one
+        if (currentSegment && currentSegment !== this.currentSegment) {
+            // Remove active class from all segments
+            document.querySelectorAll('.transcript-segment').forEach(segment => {
+                segment.classList.remove('active');
+            });
+            
+            // Find and highlight the current segment element
             const segmentElement = document.querySelector(`[data-start="${currentSegment.startTime}"]`);
             if (segmentElement) {
                 segmentElement.classList.add('active');
-                segmentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Auto-scroll to the new segment when audio is playing
+                if (!this.audioPlayer.paused) {
+                    segmentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    console.log(`Auto-scrolling to new segment: ${currentSegment.startTime}`);
+                }
             }
+            
+            // Update the tracked current segment
+            this.currentSegment = currentSegment;
         }
     }
 
@@ -379,6 +425,27 @@ class SermonPlayer {
     showError(message) {
         console.error(message);
         document.getElementById('sermonList').innerHTML = `<div class="error">${message}</div>`;
+    }
+
+    togglePlayPause() {
+        if (this.audioPlayer.paused) {
+            this.audioPlayer.play();
+        } else {
+            this.audioPlayer.pause();
+        }
+    }
+
+    updatePlayPauseButton() {
+        const playIcon = this.playPauseButton.querySelector('.play-icon');
+        const pauseIcon = this.playPauseButton.querySelector('.pause-icon');
+        
+        if (this.audioPlayer.paused || this.audioPlayer.ended) {
+            playIcon.style.display = 'inline';
+            pauseIcon.style.display = 'none';
+        } else {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'inline';
+        }
     }
 }
 
