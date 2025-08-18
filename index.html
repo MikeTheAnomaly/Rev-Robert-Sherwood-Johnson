@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papa's Sermon Collection Player</title>
+    <link rel="stylesheet" href="sermon_player.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Papa's Sermon Collection</h1>
+            <p>Interactive Sermon Player with Synchronized Transcripts</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Sermon Selection Panel -->
+            <div class="sermon-selector">
+                <h2>Select a Sermon</h2>
+                <div id="sermonList" class="sermon-list">
+                    <!-- Sermons will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- Audio Player Section -->
+            <div class="audio-section">
+                <div class="sermon-info">
+                    <h2 id="sermonTitle">Select a sermon to begin</h2>
+                    <p id="sermonSummary">Choose from the sermon list to view details and listen</p>
+                </div>
+                
+                <div class="audio-player">
+                    <audio id="audioPlayer" controls preload="metadata">
+                        <p>Your browser does not support the audio element.</p>
+                    </audio>
+                    <div class="player-info">
+                        <span id="currentTime">00:00</span>
+                        <span id="duration">00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Tabs -->
+            <div class="content-tabs">
+                <button class="tab-button active" data-tab="transcript">Full Transcript</button>
+                <button class="tab-button" data-tab="verses">Bible Verses</button>
+                <button class="tab-button" data-tab="hymns">Hymns & Songs</button>
+                <button class="tab-button" data-tab="themes">Themes</button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Transcript Tab -->
+                <div id="transcript-tab" class="tab-panel active">
+                    <div class="transcript-container">
+                        <h3>Sermon Transcript</h3>
+                        <div id="transcriptDisplay" class="transcript-display">
+                            <p>Select a sermon to view the transcript with synchronized highlighting</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bible Verses Tab -->
+                <div id="verses-tab" class="tab-panel">
+                    <div class="verses-container">
+                        <h3>Bible Verses Referenced</h3>
+                        <div id="versesDisplay" class="clickable-list">
+                            <p>Bible verses will appear here with clickable timestamps</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hymns Tab -->
+                <div id="hymns-tab" class="tab-panel">
+                    <div class="hymns-container">
+                        <h3>Hymns & Songs</h3>
+                        <div id="hymnsDisplay" class="clickable-list">
+                            <p>Hymns and songs will appear here with clickable timestamps</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Themes Tab -->
+                <div id="themes-tab" class="tab-panel">
+                    <div class="themes-container">
+                        <h3>Sermon Themes</h3>
+                        <div id="themesDisplay" class="themes-list">
+                            <p>Key themes from the sermon will be listed here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+                <div id="progressMarkers" class="progress-markers"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sermon_player.js"></script>
+</body>
+</html>
