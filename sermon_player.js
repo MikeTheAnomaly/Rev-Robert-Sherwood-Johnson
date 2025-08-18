@@ -31,7 +31,7 @@ class SermonPlayer {
 
     async loadTranscriptData() {
         try {
-            const response = await fetch('./final_output/comprehensive_transcript_mapping.json');
+            const response = await fetch('./final_lower/comprehensive_transcript_mapping.json');
             this.transcriptData = await response.json();
             this.populateSermonList();
         } catch (error) {
@@ -76,7 +76,7 @@ class SermonPlayer {
         document.getElementById('sermonSummary').textContent = sermon.summary;
         
         // Load audio
-        const audioPath = `./final_output/${sermon.file}.mp3`;
+        const audioPath = `./final_lower/${sermon.file}.mp3`;
         this.audioPlayer.src = audioPath;
         
         // Load transcript
@@ -91,7 +91,7 @@ class SermonPlayer {
 
     async loadTranscript(sermonFile) {
         try {
-            const response = await fetch(`./final_output/${sermonFile}.srt`);
+            const response = await fetch(`./final_lower/${sermonFile}.srt`);
             const srtContent = await response.text();
             this.currentTranscriptData = this.parseSRT(srtContent);
             this.displayTranscript();
