@@ -10,6 +10,12 @@ class SermonPlayer {
         this.lastPlaybackTime = 0; // Track last playback time
         this.playPauseButton = document.getElementById('playPauseButton');
         
+        // Download button references
+        this.downloadAllButton = document.getElementById('downloadAllButton');
+        this.downloadAudioButton = document.getElementById('downloadAudioButton');
+        this.downloadTranscriptButton = document.getElementById('downloadTranscriptButton');
+        this.downloadBothButton = document.getElementById('downloadBothButton');
+        
         this.initializePlayer();
         this.loadTranscriptData();
         this.setupEventListeners();
@@ -42,6 +48,23 @@ class SermonPlayer {
         // Set up play/pause button
         this.playPauseButton.addEventListener('click', () => {
             this.togglePlayPause();
+        });
+
+        // Set up download buttons
+        this.downloadAllButton.addEventListener('click', () => {
+            this.downloadAllFiles();
+        });
+
+        this.downloadAudioButton.addEventListener('click', () => {
+            this.downloadCurrentAudio();
+        });
+
+        this.downloadTranscriptButton.addEventListener('click', () => {
+            this.downloadCurrentTranscript();
+        });
+
+        this.downloadBothButton.addEventListener('click', () => {
+            this.downloadCurrentBoth();
         });
     }
 
@@ -101,6 +124,11 @@ class SermonPlayer {
         
         // Enable play/pause button
         this.playPauseButton.disabled = false;
+        
+        // Enable download buttons
+        this.downloadAudioButton.disabled = false;
+        this.downloadTranscriptButton.disabled = false;
+        this.downloadBothButton.disabled = false;
         
         // Load transcript
         await this.loadTranscript(sermon.file);
@@ -446,6 +474,123 @@ class SermonPlayer {
             playIcon.style.display = 'none';
             pauseIcon.style.display = 'inline';
         }
+    }
+
+    // Download functionality
+    async downloadFile(url, filename) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch ${filename}`);
+            }
+            
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            window.URL.revokeObjectURL(downloadUrl);
+        } catch (error) {
+            console.error(`Download failed for ${filename}:`, error);
+            alert(`Failed to download ${filename}. Please try again.`);
+        }
+    }
+
+    downloadCurrentAudio() {
+        if (!this.currentSermon) {
+            alert('Please select a sermon first');
+            return;
+        }
+        
+        const audioUrl = `./final_lower/${this.currentSermon.file}.mp3`;
+        const filename = `${this.currentSermon.file}.mp3`;
+        this.downloadFile(audioUrl, filename);
+    }
+
+    downloadCurrentTranscript() {
+        if (!this.currentSermon) {
+            alert('Please select a sermon first');
+            return;
+        }
+        
+        const transcriptUrl = `./final_lower/${this.currentSermon.file}.srt`;
+        const filename = `${this.currentSermon.file}.srt`;
+        this.downloadFile(transcriptUrl, filename);
+    }
+
+    async downloadCurrentBoth() {
+        if (!this.currentSermon) {
+            alert('Please select a sermon first');
+            return;
+        }
+        
+        // Download both files with a small delay between them
+        this.downloadCurrentAudio();
+        setTimeout(() => {
+            this.downloadCurrentTranscript();
+        }, 500);
+    }
+
+    async downloadAllFiles() {
+        if (!this.transcriptData || !this.transcriptData.transcripts) {
+            alert('No sermon data available');
+            return;
+        }
+
+        const confirmDownload = confirm(
+            `This will download ${this.transcriptData.transcripts.length * 2} files (audio + transcript for each sermon). Continue?`
+        );
+        
+        if (!confirmDownload) return;
+
+        // Show download progress
+        this.downloadAllButton.disabled = true;
+        this.downloadAllButton.textContent = '📁 Downloading...';
+
+        let downloadCount = 0;
+        const totalFiles = this.transcriptData.transcripts.length * 2;
+
+        for (const sermon of this.transcriptData.transcripts) {
+            try {
+                // Download audio file
+                const audioUrl = `./final_lower/${sermon.file}.mp3`;
+                const audioFilename = `${sermon.file}.mp3`;
+                await this.downloadFile(audioUrl, audioFilename);
+                downloadCount++;
+                
+                // Update progress
+                this.downloadAllButton.textContent = `📁 ${downloadCount}/${totalFiles}`;
+                
+                // Small delay to prevent overwhelming the browser
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Download transcript file
+                const transcriptUrl = `./final_lower/${sermon.file}.srt`;
+                const transcriptFilename = `${sermon.file}.srt`;
+                await this.downloadFile(transcriptUrl, transcriptFilename);
+                downloadCount++;
+                
+                // Update progress
+                this.downloadAllButton.textContent = `📁 ${downloadCount}/${totalFiles}`;
+                
+                // Small delay between sermons
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+            } catch (error) {
+                console.error(`Failed to download files for sermon ${sermon.file}:`, error);
+            }
+        }
+
+        // Reset button
+        this.downloadAllButton.disabled = false;
+        this.downloadAllButton.textContent = '📁 Download All';
+        
+        alert(`Download completed! ${downloadCount}/${totalFiles} files downloaded successfully.`);
     }
 }
 

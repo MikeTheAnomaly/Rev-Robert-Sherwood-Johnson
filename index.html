@@ -18,9 +18,14 @@
             <div class="sermon-selector">
                 <div class="sermon-selector-header">
                     <h2>Select a Sermon</h2>
-                    <button id="toggleSermonList" class="toggle-button" aria-label="Toggle sermon list">
-                        <span class="toggle-icon">▼</span>
-                    </button>
+                    <div class="header-buttons">
+                        <button id="downloadAllButton" class="download-all-button" title="Download all sermons">
+                            📁 Download All
+                        </button>
+                        <button id="toggleSermonList" class="toggle-button" aria-label="Toggle sermon list">
+                            <span class="toggle-icon">▼</span>
+                        </button>
+                    </div>
                 </div>
                 <div id="sermonList" class="sermon-list">
                     <!-- Sermons will be dynamically loaded here -->
@@ -38,9 +43,22 @@
                     <audio id="audioPlayer" controls preload="metadata">
                         <p>Your browser does not support the audio element.</p>
                     </audio>
-                    <div class="player-info">
-                        <span id="currentTime">00:00</span>
-                        <span id="duration">00:00</span>
+                    <div class="player-controls">
+                        <div class="player-info">
+                            <span id="currentTime">00:00</span>
+                            <span id="duration">00:00</span>
+                        </div>
+                        <div class="download-controls">
+                            <button id="downloadAudioButton" class="download-button" disabled title="Download current sermon audio">
+                                🎵 Audio
+                            </button>
+                            <button id="downloadTranscriptButton" class="download-button" disabled title="Download current sermon transcript">
+                                📝 Transcript
+                            </button>
+                            <button id="downloadBothButton" class="download-button" disabled title="Download both audio and transcript">
+                                📦 Both
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

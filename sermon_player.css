@@ -71,6 +71,30 @@ header p {
     margin: 0;
 }
 
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.download-all-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.download-all-button:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
 .toggle-button {
     background: none;
     border: none;
@@ -171,11 +195,47 @@ header p {
     border-radius: 10px;
 }
 
-.player-info {
+.player-controls {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.player-info {
+    display: flex;
+    gap: 10px;
     color: #666;
     font-size: 0.9em;
+}
+
+.download-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.download-button {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.download-button:hover:not(:disabled) {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+.download-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* Content Tabs */
@@ -472,6 +532,26 @@ header p {
     
     .sermon-list {
         max-height: 300px;
+    }
+    
+    .player-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .download-controls {
+        justify-content: center;
+    }
+    
+    .header-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .download-all-button {
+        font-size: 0.8em;
+        padding: 6px 10px;
     }
 }
 
