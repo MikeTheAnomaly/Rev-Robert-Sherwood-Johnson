@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: #000000;
     color: #333;
     min-height: 100vh;
 }
@@ -27,6 +27,32 @@ header {
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.portrait-container {
+    flex-shrink: 0;
+}
+
+.portrait-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #1e3c72;
+    box-shadow: 0 4px 16px rgba(30, 60, 114, 0.3);
+}
+
+.header-text {
+    flex: 1;
+    min-width: 300px;
 }
 
 header h1 {
@@ -512,6 +538,20 @@ header p {
     
     .tab-content {
         order: 5;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .portrait-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .header-text {
+        min-width: auto;
     }
     
     header h1 {
