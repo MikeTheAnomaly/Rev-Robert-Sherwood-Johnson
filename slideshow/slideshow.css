@@ -386,7 +386,7 @@ body {
 
 /* Hide UI Styles */
 .ui-hidden #controls,
-.ui-hidden #info,
+.ui-hidden #slide-info,
 .ui-hidden .face-box,
 .ui-hidden #face-overlays {
     opacity: 0;
