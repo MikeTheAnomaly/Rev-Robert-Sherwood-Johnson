@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Detection Slideshow</title>
+    <link rel="stylesheet" href="slideshow.css">
+</head>
+<body>
+    <div id="slideshow-container">
+        <div id="slide-content">
+            <img id="current-image" src="" alt="Slideshow Image">
+            <div id="face-overlays"></div>
+        </div>
+        
+        <div id="slide-info">
+            <div id="image-name"></div>
+            <div id="slide-counter"></div>
+            <div id="people-count"></div>
+        </div>
+        
+        <div id="controls">
+            <button id="play-pause">⏸️ Pause</button>
+            <button id="prev-slide">⏮️ Previous</button>
+            <button id="next-slide">⏭️ Next</button>
+            <button id="toggle-boxes">📦 Hide Boxes</button>
+            <button id="settings-btn">⚙️ Settings</button>
+            <button id="hide-ui-btn">👁️ Hide UI</button>
+        </div>
+        
+        <div id="loading">Loading slideshow...</div>
+        <div id="error" style="display: none;">Error loading slideshow data</div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Slideshow Settings</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="transition-time">Transition Time (seconds):</label>
+                    <input type="range" id="transition-time" min="1" max="20" value="5" step="0.5">
+                    <span id="transition-value">5.0s</span>
+                </div>
+                <div class="setting-group">
+                    <label for="auto-advance">Auto-advance slides:</label>
+                    <input type="checkbox" id="auto-advance" checked>
+                </div>
+                <div class="setting-group">
+                    <label for="zoom-enabled">Enable zoom transitions:</label>
+                    <input type="checkbox" id="zoom-enabled" checked>
+                </div>
+                <div class="setting-group">
+                    <label for="zoom-whitelist">Zoom person IDs (comma-separated):</label>
+                    <input type="text" id="zoom-whitelist" value="0,12" placeholder="e.g., 0,5,12">
+                    <small>Only zoom into faces of these person IDs</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-settings">Save Settings</button>
+                <button id="cancel-settings">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="slideshow.js"></script>
+</body>
+</html>

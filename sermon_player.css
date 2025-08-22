@@ -597,3 +597,19 @@ header p {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.footer {
+    background: #f8f9fa;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.footer a {
+    color: #2a5298;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
