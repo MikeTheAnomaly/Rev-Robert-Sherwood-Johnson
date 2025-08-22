@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebration of Life - Reverend Robert Sherwood Johnson</title>
+    <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Times New Roman', serif;
+            background-color: white;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 3.5in);
+            grid-template-rows: repeat(5, 2in);
+            gap: 0.1in;
+            width: 8.5in;
+            height: 11in;
+            margin: 0 auto;
+        }
+        
+        .card {
+            width: 3.5in;
+            height: 2in;
+            border: 1px dashed #ccc;
+            padding: 0.1in;
+            box-sizing: border-box;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 0.4in;
+            margin-bottom: 0.05in;
+        }
+        
+        .cross {
+            font-size: 36px;
+            color: #333;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
+        .bottom-section {
+            position: absolute;
+            bottom: 0.05in;
+            left: 0.1in;
+            right: 0.1in;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0.1in;
+            align-items: center;
+        }
+        
+        .instructions-section {
+            text-align: left;
+        }
+        
+        .instructions-header {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+            line-height: 1.1;
+        }
+        
+        .instructions-text {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.2;
+            font-family: Arial, sans-serif;
+        }
+        
+        .instructions-text a {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .qr-code {
+            width: 0.7in;
+            height: 0.7in;
+            object-fit: contain;
+            margin-bottom: 2px;
+        }
+        
+        .website-link {
+            font-size: 4px;
+            color: #666;
+            line-height: 1;
+            font-family: Arial, sans-serif;
+            margin-bottom: 1px;
+        }
+        
+        .qr-instructions {
+            font-size: 3px;
+            color: #888;
+            line-height: 1.1;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            padding: 0 0.1in;
+            margin-bottom: 0.8in; /* Space for QR code at bottom */
+        }
+        
+        .roles {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 0.05in;
+            line-height: 1.2;
+        }
+        
+        .name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.05in;
+            line-height: 1.1;
+        }
+        
+        .dates {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container" id="cardContainer">
+        <!-- Template Card (will be duplicated by JavaScript) -->
+        <div class="card" id="cardTemplate">
+            <div class="card-header">
+                <div class="cross">✝</div>
+            </div>
+            <div class="card-content">
+                <div class="roles">Father • Husband • Grandfather • Great-Grandfather</div>
+                <div class="name">Reverend Robert Sherwood Johnson</div>
+                <div class="dates">September 22, 1937 - July 29, 2025</div>
+            </div>
+            <div class="bottom-section">
+                <div class="instructions-section">
+                    <div class="instructions-header">Memorial Website</div>
+                    <p class="instructions-text">
+                        Please enjoy a collection of his sermons and memories at<br>
+                        <a href="https://johnson.miketheanomaly.com">johnson.miketheanomaly.com</a>
+                    </p>
+                </div>
+                <div class="qr-container">
+                    <img src="../qrcode-johnson-miketheanomaly.png" alt="QR Code" class="qr-code">
+                    <div class="website-link">johnson.miketheanomaly.com</div>
+                    <div class="qr-instructions">Scan with phone camera</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to duplicate cards
+        function createCards() {
+            const container = document.getElementById('cardContainer');
+            const template = document.getElementById('cardTemplate');
+            const numberOfCards = 10;
+            
+            // Remove the template ID to avoid duplicate IDs
+            template.removeAttribute('id');
+            
+            // Create additional cards by cloning the template
+            for (let i = 1; i < numberOfCards; i++) {
+                const cardClone = template.cloneNode(true);
+                container.appendChild(cardClone);
+            }
+        }
+        
+        // Create cards when the page loads
+        document.addEventListener('DOMContentLoaded', createCards);
+    </script>
+</body>
+</html>
